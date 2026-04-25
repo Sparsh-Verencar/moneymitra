@@ -24,59 +24,75 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({
   chatInput,
   onChatInputChange,
   onSendMessage,
-  onClose
+  onClose,
 }) => {
   return (
-    <div className="w-96 border-l border-amber-500 border-opacity-20 pl-8 flex flex-col">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-amber-400 font-mono text-sm tracking-widest">AI GUIDE</h3>
+    <div className="w-full lg:w-96 flex flex-col rounded-[1.75rem] border border-white/10 bg-white/5 backdrop-blur p-4 sm:p-5">
+      
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-[#8f877a]">
+            AI Guide
+          </h3>
+          <p className="text-sm text-white mt-1">
+            Ask about this concept
+          </p>
+        </div>
+
         <button
           onClick={onClose}
-          className="text-amber-400 hover:text-amber-300 transition"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white hover:bg-white/10 transition"
         >
-          <X size={18} />
+          <X size={16} />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 space-y-4 mb-6 overflow-y-auto">
+      <div className="flex-1 space-y-4 overflow-y-auto pr-1">
         {messages.length === 0 ? (
-          <div className="text-slate-400 text-sm">
-            Ask me anything about {concept.title}. I'm here to help clarify concepts.
+          <div className="text-sm text-[#8f877a] leading-6">
+            Ask anything about <span className="text-white">{concept.title}</span>.  
+            I’ll explain it in simple terms.
           </div>
         ) : (
-          messages.map((msg, idx) => (
-            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+          messages.map((msg, idx) => {
+            const isUser = msg.role === 'user';
+
+            return (
               <div
-                className={`max-w-xs px-4 py-3 rounded text-sm ${
-                  msg.role === 'user'
-                    ? 'bg-amber-500 bg-opacity-20 text-amber-100 border border-amber-500 border-opacity-30'
-                    : 'bg-slate-800 text-slate-100 border border-amber-500 border-opacity-20'
-                }`}
-                style={{ borderRadius: '4px' }}
+                key={idx}
+                className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
               >
-                {msg.content}
+                <div
+                  className={`max-w-[80%] px-4 py-3 text-sm leading-6 rounded-2xl border ${
+                    isUser
+                      ? 'bg-gradient-to-r from-amber-400/20 to-cyan-400/20 border-white/10 text-white'
+                      : 'bg-white/5 border-white/10 text-[#d6d0c4]'
+                  }`}
+                >
+                  {msg.content}
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 
       {/* Input */}
-      <div className="flex gap-2 pt-6 border-t border-amber-500 border-opacity-20">
+      <div className="mt-4 flex gap-2 border-t border-white/10 pt-4">
         <input
           type="text"
           value={chatInput}
           onChange={(e) => onChatInputChange(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && onSendMessage()}
+          onKeyDown={(e) => e.key === 'Enter' && onSendMessage()}
           placeholder="Ask a question..."
-          className="flex-1 bg-slate-800 border border-amber-500 border-opacity-20 text-white text-sm px-3 py-2 focus:border-opacity-40 focus:outline-none transition"
-          style={{ borderRadius: '2px' }}
+          className="flex-1 rounded-full bg-black/20 border border-white/10 px-4 py-2 text-sm text-white placeholder:text-[#8f877a] focus:outline-none focus:border-cyan-400/40"
         />
+
         <button
           onClick={onSendMessage}
-          className="p-2 border border-amber-500 text-amber-400 hover:bg-amber-500 hover:bg-opacity-10 transition"
-          style={{ borderRadius: '2px' }}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white hover:bg-cyan-400/20 transition"
         >
           <Send size={16} />
         </button>
