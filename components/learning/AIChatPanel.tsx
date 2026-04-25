@@ -28,16 +28,13 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({
 }) => {
   return (
     <div className="w-full lg:w-96 flex flex-col rounded-[1.75rem] border border-white/10 bg-white/5 backdrop-blur p-4 sm:p-5">
-      
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.28em] text-[#8f877a]">
             AI Guide
           </h3>
-          <p className="text-sm text-white mt-1">
-            Ask about this concept
-          </p>
+          <p className="text-sm text-white mt-1">Ask about this concept</p>
         </div>
 
         <button
@@ -52,8 +49,9 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({
       <div className="flex-1 space-y-4 overflow-y-auto pr-1">
         {messages.length === 0 ? (
           <div className="text-sm text-[#8f877a] leading-6">
-            Ask anything about <span className="text-white">{concept.title}</span>.  
-            I’ll explain it in simple terms.
+            Ask anything about{' '}
+            <span className="text-white">{concept.title}</span>. I’ll explain it
+            in simple terms.
           </div>
         ) : (
           messages.map((msg, idx) => {
@@ -67,7 +65,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({
                 <div
                   className={`max-w-[80%] px-4 py-3 text-sm leading-6 rounded-2xl border ${
                     isUser
-                      ? 'bg-gradient-to-r from-amber-400/20 to-cyan-400/20 border-white/10 text-white'
+                      ? 'bg-linear-to-r from-amber-400/20 to-cyan-400/20 border-white/10 text-white'
                       : 'bg-white/5 border-white/10 text-[#d6d0c4]'
                   }`}
                 >
