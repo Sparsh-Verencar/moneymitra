@@ -16,21 +16,29 @@ import {
   IndianRupee,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { topics } from '@/lib/data/financialTopics';
+import { topics } from '@/app/lib/financialTopics';
 
 const getIcon = (id: string | number) => {
   const iconId = String(id).toLowerCase();
   switch (iconId) {
     case 'investing':
-      return <TrendingUp className="text-amber-400" size={22} strokeWidth={1.75} />;
+      return (
+        <TrendingUp className="text-amber-400" size={22} strokeWidth={1.75} />
+      );
     case 'budgeting':
       return <Wallet className="text-amber-400" size={22} strokeWidth={1.75} />;
     case 'insurance':
-      return <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />;
+      return (
+        <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />
+      );
     case 'taxes':
-      return <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />;
+      return (
+        <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />
+      );
     default:
-      return <LayoutGrid className="text-amber-400" size={22} strokeWidth={1.75} />;
+      return (
+        <LayoutGrid className="text-amber-400" size={22} strokeWidth={1.75} />
+      );
   }
 };
 
@@ -43,7 +51,7 @@ const HomePage = () => {
       { label: 'Topics available', value: topics.length.toString() },
       { label: 'Goal', value: 'Learn first, then act' },
     ],
-    []
+    [],
   );
 
   const scrollCarousel = (direction: 'left' | 'right') => {
@@ -90,7 +98,9 @@ const HomePage = () => {
                 <div className="text-[9px] uppercase tracking-[0.2em] text-amber-300 sm:text-[10px] sm:tracking-[0.25em]">
                   Welcome back
                 </div>
-                <div className="text-sm font-medium text-white">Suyash Khobrekar</div>
+                <div className="text-sm font-medium text-white">
+                  Suyash Khobrekar
+                </div>
               </div>
               <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#141414]">
                 <User size={18} className="text-amber-300" />
@@ -112,8 +122,9 @@ const HomePage = () => {
                 Build financial confidence step by step.
               </h1>
               <p className="mt-5 max-w-2xl text-sm leading-7 text-[#b7b1a6] sm:text-base sm:leading-8 md:text-lg">
-                Start with a topic, open its subtopics, and move through concepts in a guided
-                learning flow. The language stays simple. The content stays India-specific.
+                Start with a topic, open its subtopics, and move through
+                concepts in a guided learning flow. The language stays simple.
+                The content stays India-specific.
               </p>
             </div>
 

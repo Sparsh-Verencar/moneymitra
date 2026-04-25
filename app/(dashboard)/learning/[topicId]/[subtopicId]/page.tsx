@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Home } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
-import { topics } from '@/lib/data/financialTopics';
+import { topics } from '@/app/lib/financialTopics';
 import Timeline from '@/components/learning/Timeline';
 import ConceptCard from '@/components/learning/ConceptCard';
 import AIChatPanel from '@/components/learning/AIChatPanel';
@@ -15,8 +15,8 @@ const LearningPage = () => {
   const topicId = parseInt(params.topicId as string);
   const subtopicId = parseInt(params.subtopicId as string);
 
-  const topic = topics.find(t => t.id === topicId);
-  const subtopic = topic?.subtopics.find(s => s.id === subtopicId);
+  const topic = topics.find((t) => t.id === topicId);
+  const subtopic = topic?.subtopics.find((s) => s.id === subtopicId);
 
   const initialConceptId = subtopic?.concepts[0]?.id ?? 0;
 
@@ -34,11 +34,11 @@ const LearningPage = () => {
   }
 
   const selectedConcept =
-    subtopic.concepts.find(c => c.id === selectedConceptId) ||
+    subtopic.concepts.find((c) => c.id === selectedConceptId) ||
     subtopic.concepts[0];
 
   const currentIndex = subtopic.concepts.findIndex(
-    c => c.id === selectedConceptId
+    (c) => c.id === selectedConceptId,
   );
 
   const isFirstConcept = currentIndex === 0;
@@ -48,11 +48,11 @@ const LearningPage = () => {
     if (!chatInput.trim()) return;
 
     const userMsg = { role: 'user', content: chatInput };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages((prev) => [...prev, userMsg]);
     setChatInput('');
 
     setTimeout(() => {
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
@@ -64,7 +64,6 @@ const LearningPage = () => {
 
   return (
     <div className="min-h-screen bg-[#090909] text-[#f4f1ea]">
-      
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#090909]/80 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-4">
@@ -83,7 +82,6 @@ const LearningPage = () => {
 
       {/* MAIN */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-8">
-        
         {/* MOBILE TIMELINE (top) */}
         <div className="md:hidden mb-6">
           <Timeline
@@ -94,9 +92,8 @@ const LearningPage = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-6 md:gap-8">
-          
           {/* DESKTOP TIMELINE */}
-          <div className="hidden md:block w-[260px] shrink-0">
+          <div className="hidden md:block w-65 shrink-0">
             <Timeline
               concepts={subtopic.concepts}
               selectedConceptId={selectedConceptId}
@@ -106,7 +103,6 @@ const LearningPage = () => {
 
           {/* CONTENT */}
           <div className="flex-1 flex flex-col gap-6">
-            
             <ConceptCard
               concept={selectedConcept}
               conceptIndex={currentIndex}
@@ -115,13 +111,12 @@ const LearningPage = () => {
 
             {/* NAV + ACTIONS */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              
               <div className="flex gap-3">
                 <button
                   disabled={isFirstConcept}
                   onClick={() =>
                     setSelectedConceptId(
-                      subtopic.concepts[currentIndex - 1]?.id
+                      subtopic.concepts[currentIndex - 1]?.id,
                     )
                   }
                   className={`px-5 py-3 text-sm rounded-xl border transition ${
@@ -137,7 +132,7 @@ const LearningPage = () => {
                   disabled={isLastConcept}
                   onClick={() =>
                     setSelectedConceptId(
-                      subtopic.concepts[currentIndex + 1]?.id
+                      subtopic.concepts[currentIndex + 1]?.id,
                     )
                   }
                   className={`px-5 py-3 text-sm rounded-xl border transition ${
@@ -161,7 +156,7 @@ const LearningPage = () => {
 
           {/* CHAT PANEL */}
           {chatOpen && (
-            <div className="w-full md:w-[360px] shrink-0">
+            <div className="w-full md:w-90 shrink-0">
               <AIChatPanel
                 concept={selectedConcept}
                 messages={messages}

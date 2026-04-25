@@ -2,18 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { saveOnboarding } from '../lib/saveOnboarding';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type LifeStage = 'student' | 'working' | 'family' | 'retired' | '';
 type IncomeType = 'salary' | 'business' | '';
+type Gender = 'Male' | 'Female' | 'Other' | '';
+type Caste = 'General' | 'OBC' | 'SC' | 'ST' | 'Prefer not to say' | '';
 
 interface FormData {
   // Step 1
   name: string;
   age: string;
-  gender: string;
-  caste: string;
+  gender: Gender;
+  caste: Caste;
   // Step 2
   lifeStage: LifeStage;
   // Step 3
@@ -180,7 +183,7 @@ function YesNo({
     <div>
       <Label>{label}</Label>
       <div className="flex gap-3">
-        {[true, false].map((v) => (
+        {([true, false] as const).map((v) => (
           <button
             key={String(v)}
             type="button"
@@ -219,7 +222,9 @@ function CheckChip({
       }`}
     >
       <span
-        className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 transition-all duration-150 ${checked ? 'border-amber-500 bg-amber-500' : 'border-[#444]'}`}
+        className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 transition-all duration-150 ${
+          checked ? 'border-amber-500 bg-amber-500' : 'border-[#444]'
+        }`}
       >
         {checked && (
           <span className="text-[#141414] text-[10px] font-bold">✓</span>
@@ -262,20 +267,37 @@ function CardButton({
 function NextBtn({
   onClick,
   disabled,
+  loading,
   label = 'Continue →',
 }: {
   onClick: () => void;
   disabled?: boolean;
+  loading?: boolean;
   label?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={disabled}
+      disabled={disabled || loading}
       className="w-full bg-amber-500 hover:bg-amber-400 text-[#141414] font-mono text-[13px] tracking-[0.18em] uppercase font-semibold rounded-md py-4 transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed shadow-lg shadow-amber-500/10 mt-6"
     >
-      {label}
+      {loading ? (
+        <span className="inline-flex items-center gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className="w-1.5 h-1.5 rounded-full bg-current animate-bounce"
+              style={{
+                animationDelay: `${i * 0.15}s`,
+                animationDuration: '0.8s',
+              }}
+            />
+          ))}
+        </span>
+      ) : (
+        label
+      )}
     </button>
   );
 }
@@ -311,7 +333,7 @@ function Step1({
       <div>
         <Label>Gender</Label>
         <div className="flex gap-3">
-          {['Male', 'Female', 'Other'].map((g) => (
+          {(['Male', 'Female', 'Other'] as Gender[]).map((g) => (
             <button
               key={g}
               type="button"
@@ -414,7 +436,7 @@ function Step3({
         <div>
           <Label>Income Type</Label>
           <div className="flex gap-3">
-            {['Salary', 'Business'].map((t) => (
+            {(['Salary', 'Business'] as const).map((t) => (
               <button
                 key={t}
                 type="button"
@@ -687,12 +709,12 @@ function OutroScreen({
 
   const msg = wantsTax
     ? {
-        headline: 'We`ve got you covered.',
-        body: 'Sit back — we`ll walk you through everything, one step at a time.',
+        headline: "We've got you covered.",
+        body: "Sit back — we'll walk you through everything, one step at a time.",
       }
     : {
-        headline: 'We`ll change your mind. 😄',
-        body: 'Tax saving isn`t scary. We`ll make sure you never miss out.',
+        headline: "We'll change your mind. 😄",
+        body: "Tax saving isn't scary. We'll make sure you never miss out.",
       };
 
   return (
@@ -718,11 +740,6 @@ function OutroScreen({
           Let's go →
         </button>
       </div>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500;600&display=swap');
-        .font-serif { font-family: 'DM Serif Display', serif !important; }
-        .font-mono  { font-family: 'DM Mono', monospace !important; }
-      `}</style>
     </div>
   );
 }
@@ -735,6 +752,8 @@ export default function Onboarding() {
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState<'forward' | 'back'>('forward');
   const [done, setDone] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
   const router = useRouter();
 
   const set = (key: keyof FormData, value: any) => {
@@ -750,10 +769,21 @@ export default function Onboarding() {
     }, 220);
   };
 
-  const next = () => {
+  // ── Fixed next function ──────────────────────────────────────────────────────
+  const next = async () => {
     if (step === TOTAL_STEPS) {
-      setAnimating(true);
-      setTimeout(() => setDone(true), 220);
+      setSaving(true);
+      setSaveError('');
+      try {
+        await saveOnboarding(data);
+        setAnimating(true);
+        setTimeout(() => setDone(true), 220);
+      } catch (err) {
+        console.error('Failed to save:', err);
+        setSaveError('Something went wrong. Please try again.');
+      } finally {
+        setSaving(false);
+      }
     } else {
       transition(step + 1, 'forward');
     }
@@ -854,9 +884,18 @@ export default function Onboarding() {
             {stepComponents[step]}
           </div>
 
+          {/* Save error */}
+          {saveError && (
+            <div className="flex items-start gap-2 bg-red-900/30 border border-red-500/40 rounded-md px-3 py-2.5 mt-4">
+              <span className="text-red-400 text-xs mt-px shrink-0">⚠</span>
+              <p className="font-mono text-[12px] text-red-400">{saveError}</p>
+            </div>
+          )}
+
           <NextBtn
             onClick={next}
             disabled={!canProceed()}
+            loading={saving}
             label={step === TOTAL_STEPS ? 'Finish →' : 'Continue →'}
           />
         </div>
