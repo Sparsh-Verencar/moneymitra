@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { useAuthUser } from '../context/AuthContext' // adjust path
 
 type LifeStage = 'student' | 'working' | 'family' | 'retired' | '';
 type IncomeType = 'salary' | 'business' | '';
@@ -107,32 +108,37 @@ function mapToBackendPayload(data: FormData) {
 }
 
 export default function BudgetingPage() {
-  const [storedData] = useState<FormData>({
-    name: 'Rahul Sharma',
-    age: '29',
-    gender: 'Male',
-    caste: 'General',
-    lifeStage: 'working',
-    monthlyAllowance: '',
-    monthlyIncome: '40000-60000',
-    incomeType: 'salary',
-    dependents: '2',
-    monthlyPension: '',
-    rent: '12000',
-    homeLoan: '0',
-    utilities: '2500',
-    internet: '1000',
-    food: '7000',
-    transport: '3500',
-    savesMoney: true,
-    approxSavings: '5000-10000',
-    investedBefore: true,
-    investments: ['FD', 'SIP / Mutual Funds', 'PPF'],
-    healthInsurance: true,
-    lifeInsurance: false,
-    filesTax: true,
-    wantsTaxSave: true,
-  });
+  const { user, onboarding, loading } = useAuthUser();
+
+  const storedData: FormData | null = useMemo(() => {
+    if (!onboarding) return null;
+    return {
+      name: onboarding.name,
+      age: onboarding.age,
+      gender: onboarding.gender,
+      caste: onboarding.caste,
+      lifeStage: onboarding.lifeStage,
+      monthlyAllowance: onboarding.monthlyAllowance,
+      monthlyIncome: onboarding.monthlyIncome,
+      incomeType: onboarding.incomeType,
+      dependents: onboarding.dependents,
+      monthlyPension: onboarding.monthlyPension,
+      rent: onboarding.rent,
+      homeLoan: onboarding.homeLoan,
+      utilities: onboarding.utilities,
+      internet: onboarding.internet,
+      food: onboarding.food,
+      transport: onboarding.transport,
+      savesMoney: onboarding.savesMoney,
+      approxSavings: onboarding.approxSavings,
+      investedBefore: onboarding.investedBefore,
+      investments: onboarding.investments,
+      healthInsurance: onboarding.healthInsurance,
+      lifeInsurance: onboarding.lifeInsurance,
+      filesTax: onboarding.filesTax,
+      wantsTaxSave: onboarding.wantsTaxSave,
+    };
+  }, [onboarding]);
 
   const [sessionId, setSessionId] = useState('');
   const [savedAnswers, setSavedAnswers] = useState<any[]>([]);
@@ -144,9 +150,13 @@ export default function BudgetingPage() {
   const [currentAnswerAmount, setCurrentAnswerAmount] = useState('');
   const [currentMultiExpense, setCurrentMultiExpense] = useState([{ label: '', amount: '' }]);
 
-  const backendPayload = mapToBackendPayload(storedData);
+  const backendPayload = useMemo(
+    () => (storedData ? mapToBackendPayload(storedData) : null),
+    [storedData]
+  );
 
   const startBudgeting = async () => {
+    if (!backendPayload) return;
     setStarting(true);
 
     try {
@@ -188,7 +198,6 @@ export default function BudgetingPage() {
 
   const submitAnswer = async () => {
     if (!sessionId || !aiState) return;
-
     setSubmitting(true);
 
     try {
@@ -245,6 +254,7 @@ export default function BudgetingPage() {
     setCurrentMultiExpense([{ label: '', amount: '' }]);
   };
 
+  // Tailwind class constants (same as before)
   const inputBase =
     'w-full rounded-xl border border-amber-300/10 bg-[#121212]/90 px-4 py-3 text-[13px] text-[#f6efe2] placeholder:text-[#7b7469] outline-none transition duration-300 focus:border-amber-300/45 focus:shadow-[0_0_0_1px_rgba(251,191,36,0.12),0_0_24px_rgba(245,158,11,0.08)]';
   const mono = 'font-mono tracking-[0.08em] uppercase';
@@ -332,6 +342,33 @@ export default function BudgetingPage() {
       />
     );
   };
+
+  // Loading state while auth/onboarding is coming from DB
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#111111] text-white flex items-center justify-center px-6">
+        <p className={`text-[11px] text-[#b7a98b] ${mono}`}>Loading profile from database...</p>
+      </div>
+    );
+  }
+
+  // If user is not logged in or no onboarding in DB
+  if (!user || !storedData) {
+    return (
+      <div className="min-h-screen bg-[#111111] text-white flex items-center justify-center px-6">
+        <div className="max-w-md text-center">
+          <p className={`mb-3 text-[11px] text-[#b7a98b] ${mono}`}>Profile missing</p>
+          <h1 className="text-3xl text-[#f5ecde]" style={{ fontFamily: '"DM Serif Display", serif' }}>
+            No onboarding data found
+          </h1>
+          <p className="mt-3 text-sm text-[#9b927f]">
+            Please complete the onboarding flow so we can pull your data from the database.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#111111] px-4 py-8 text-white md:px-6">

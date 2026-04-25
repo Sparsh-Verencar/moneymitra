@@ -263,7 +263,7 @@ const HomePage = () => {
           ))}
         </section>
 
-        <section className="mt-12">
+          <section className="mt-12">
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-300 sm:text-xs sm:tracking-[0.3em]">
@@ -280,6 +280,7 @@ const HomePage = () => {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {/* AI Budgeting (existing glowing card) */}
             <article
               onClick={() => router.push('/budgeting')}
               className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6"
@@ -310,8 +311,75 @@ const HomePage = () => {
                 <ArrowUpRight size={18} />
               </div>
             </article>
+
+            {/* Tax Sections card */}
+            <article
+              onClick={() => router.push('/tax-sections')}
+              className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
+                  <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />
+                </div>
+
+                <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
+                  Tax Sections
+                </div>
+              </div>
+
+              <h3 className="mt-6 text-xl font-semibold tracking-tight text-white group-hover:text-amber-300 sm:text-2xl">
+                Tax Sections Guide
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
+                Browse key Indian tax sections like 80C, 80D, 24(b), and HRA with simple
+                explanations and examples.
+              </p>
+
+              <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.28em]">
+                  Open tax sections
+                </span>
+                <ArrowUpRight size={18} />
+              </div>
+            </article>
+
+            {/* Tax Planner card (dynamic route) */}
+            <article
+              onClick={() => {
+                const userId = user?.uid || user?.id || 'demo-user';
+                router.push(`/tax-planner/${userId}`);
+              }}
+              className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
+                  <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />
+                </div>
+
+                <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
+                  Tax Calculator
+                </div>
+              </div>
+
+              <h3 className="mt-6 text-xl font-semibold tracking-tight text-white group-hover:text-amber-300 sm:text-2xl">
+                Tax Planner & Calculator
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
+                Use your profile to run old vs new regime checks and estimate how different tax
+                moves could change your payable tax.
+              </p>
+
+              <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.28em]">
+                  Open tax planner
+                </span>
+                <ArrowUpRight size={18} />
+              </div>
+            </article>
           </div>
         </section>
+
       </main>
 
       <footer className="border-t border-white/8 px-4 py-8 sm:px-6">
