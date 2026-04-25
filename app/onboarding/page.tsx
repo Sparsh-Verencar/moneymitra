@@ -785,7 +785,7 @@ export default function Onboarding() {
     return (
       <OutroScreen
         wantsTax={data.wantsTaxSave}
-        onDone={() => router.push('/')}
+        onDone={() => router.push('/home')}
       />
     );
   }
