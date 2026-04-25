@@ -253,6 +253,26 @@ export default function BudgetingPage() {
     setSavedAnswers([]);
   };
 
+  const inputBase =
+    'w-full rounded-xl border border-amber-300/10 bg-[#121212]/90 px-4 py-3 text-[13px] text-[#f6efe2] placeholder:text-[#7b7469] outline-none transition duration-300 focus:border-amber-300/45 focus:shadow-[0_0_0_1px_rgba(251,191,36,0.12),0_0_24px_rgba(245,158,11,0.08)]';
+  const mono = 'font-mono tracking-[0.08em] uppercase';
+  const labelClass = `mb-2 block text-[11px] text-[#b7a98b] ${mono}`;
+  const sectionCard =
+    'relative overflow-hidden rounded-[1.75rem] border border-amber-200/10 bg-[#1a1a1a]/88 backdrop-blur-xl shadow-[0_0_0_1px_rgba(255,255,255,0.02),0_24px_80px_rgba(0,0,0,0.42)]';
+  const panelCard =
+    'relative rounded-[1.25rem] border border-amber-200/10 bg-[#141414]/95 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_0_0_1px_rgba(251,191,36,0.03)]';
+  const ghostBtn =
+    'rounded-xl border border-amber-200/15 bg-transparent px-4 py-3 text-[11px] font-medium uppercase tracking-[0.16em] text-[#d8ccb3] transition duration-300 hover:border-amber-300/40 hover:bg-amber-400/[0.04] hover:text-amber-100 hover:shadow-[0_0_26px_rgba(245,158,11,0.08)]';
+  const primaryBtn =
+    'rounded-xl border border-amber-300/35 bg-[linear-gradient(180deg,rgba(251,191,36,0.95),rgba(217,119,6,0.92))] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#120f09] shadow-[0_10px_30px_rgba(245,158,11,0.18),0_0_30px_rgba(251,191,36,0.10)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_38px_rgba(245,158,11,0.22),0_0_42px_rgba(251,191,36,0.16)] disabled:opacity-50';
+
+  const renderValue = (label: string, value: string) => (
+    <div className="flex items-start justify-between gap-4 border-b border-white/[0.04] py-2.5 last:border-b-0">
+      <span className={`text-[10px] text-[#8d846f] ${mono}`}>{label}</span>
+      <span className="text-right text-sm text-[#f2eadc]">{value || '—'}</span>
+    </div>
+  );
+
   const renderDynamicAnswerInput = () => {
     const key = aiState?.field_key || '';
 
@@ -264,25 +284,25 @@ export default function BudgetingPage() {
       return (
         <div className="space-y-3">
           {currentMultiExpense.map((item, index) => (
-            <div key={index} className="grid grid-cols-2 gap-3">
+            <div key={index} className="grid gap-3 md:grid-cols-2">
               <input
                 placeholder="Expense label"
                 value={item.label}
                 onChange={(e) => updateExpenseRow(index, 'label', e.target.value)}
-                className="w-full bg-[#141414] border border-[#333] rounded-md px-4 py-3 text-white"
+                className={`${inputBase} ${mono}`}
               />
               <input
                 placeholder="Amount"
                 value={item.amount}
                 onChange={(e) => updateExpenseRow(index, 'amount', e.target.value)}
-                className="w-full bg-[#141414] border border-[#333] rounded-md px-4 py-3 text-white"
+                className={`${inputBase} ${mono}`}
               />
             </div>
           ))}
           <button
             type="button"
             onClick={addExpenseRow}
-            className="px-4 py-3 rounded-md border border-[#444] text-[#ccc]"
+            className={ghostBtn}
           >
             Add expense row
           </button>
@@ -296,11 +316,11 @@ export default function BudgetingPage() {
       key.includes('salary')
     ) {
       return (
-        <div className="grid grid-cols-[180px_1fr] gap-3">
+        <div className="grid gap-3 md:grid-cols-[190px_1fr]">
           <select
             value={currentAnswerType}
             onChange={(e) => setCurrentAnswerType(e.target.value)}
-            className="w-full bg-[#141414] border border-[#333] rounded-md px-4 py-3 text-white"
+            className={`${inputBase} ${mono}`}
           >
             <option value="monthly">Monthly</option>
             <option value="weekly">Weekly</option>
@@ -310,7 +330,7 @@ export default function BudgetingPage() {
             placeholder="Enter amount"
             value={currentAnswerAmount}
             onChange={(e) => setCurrentAnswerAmount(e.target.value)}
-            className="w-full bg-[#141414] border border-[#333] rounded-md px-4 py-3 text-white"
+            className={`${inputBase} ${mono}`}
           />
         </div>
       );
@@ -321,167 +341,337 @@ export default function BudgetingPage() {
         placeholder="Type your answer"
         value={currentAnswerAmount}
         onChange={(e) => setCurrentAnswerAmount(e.target.value)}
-        className="w-full bg-[#141414] border border-[#333] rounded-md px-4 py-3 text-white"
+        className={`${inputBase} ${mono}`}
       />
     );
   };
 
   if (loadingStorage) {
     return (
-      <div className="min-h-screen bg-[#141414] text-white flex items-center justify-center">
-        Loading your saved onboarding data...
+      <div className="min-h-screen bg-[#111111] text-white flex items-center justify-center px-6">
+        <style jsx global>{`
+          @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
+          html {
+            background: #111111;
+          }
+          body {
+            background:
+              radial-gradient(circle at top, rgba(245, 158, 11, 0.08), transparent 30%),
+              radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.06), transparent 24%),
+              linear-gradient(180deg, #111111 0%, #141414 45%, #101010 100%);
+            color: white;
+          }
+        `}</style>
+        <div className="text-center">
+          <p className={`text-[11px] text-[#b7a98b] ${mono}`}>Budget AI Portal</p>
+          <h1
+            className="mt-3 text-4xl text-[#f5ecde]"
+            style={{ fontFamily: '"DM Serif Display", serif' }}
+          >
+            Loading your saved onboarding data...
+          </h1>
+        </div>
       </div>
     );
   }
 
   if (!storedData) {
     return (
-      <div className="min-h-screen bg-[#141414] text-white flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-[#1e1e1e] border border-[#2a2a2a] rounded-xl p-6">
-          <h1 className="text-2xl mb-3">No onboarding data found</h1>
-          <p className="text-[#999] mb-6">
-            Please complete the onboarding form first so the budgeting page can load your saved data.
-          </p>
-          <a
-            href="/onboarding"
-            className="inline-block bg-amber-500 text-[#141414] px-5 py-3 rounded-md font-semibold"
+      <div className="min-h-screen bg-[#111111] text-white flex items-center justify-center p-6">
+        <style jsx global>{`
+          @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
+          html {
+            background: #111111;
+          }
+          body {
+            background:
+              radial-gradient(circle at top, rgba(245, 158, 11, 0.08), transparent 30%),
+              radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.06), transparent 24%),
+              linear-gradient(180deg, #111111 0%, #141414 45%, #101010 100%);
+            color: white;
+          }
+        `}</style>
+
+        <div className={`${sectionCard} max-w-xl w-full p-8`}>
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute left-4 top-4 h-5 w-5 border-l border-t border-amber-300/25" />
+            <div className="absolute right-4 top-4 h-5 w-5 border-r border-t border-amber-300/25" />
+            <div className="absolute bottom-4 left-4 h-5 w-5 border-b border-l border-amber-300/25" />
+            <div className="absolute bottom-4 right-4 h-5 w-5 border-b border-r border-amber-300/25" />
+          </div>
+
+          <p className={`mb-3 text-[11px] text-[#b7a98b] ${mono}`}>Restricted access</p>
+          <h1
+            className="text-4xl leading-tight text-[#f5ecde]"
+            style={{ fontFamily: '"DM Serif Display", serif' }}
           >
-            Go to onboarding
-          </a>
+            No onboarding data found
+          </h1>
+          <p className="mt-4 max-w-md text-sm leading-7 text-[#9b927f]">
+            Please complete the onboarding form first so the budgeting page can load your saved profile and start the budgeting session.
+          </p>
+
+          <div className="mt-8">
+            <a href="/onboarding" className={`${primaryBtn} inline-block no-underline`}>
+              Go to onboarding
+            </a>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#141414] text-white px-4 py-8">
-      <div className="max-w-6xl mx-auto grid gap-6">
-        <div className="bg-[#1e1e1e] border border-[#2a2a2a] rounded-xl p-6">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div>
-              <h1 className="text-3xl font-semibold mb-2">Budgeting AI</h1>
-              <p className="text-[#999]">
-                Loaded your initial onboarding data from local storage.
+    <div className="min-h-screen overflow-hidden bg-[#111111] px-4 py-8 text-white md:px-6">
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        html {
+          background: #111111;
+        }
+
+        body {
+          background:
+            radial-gradient(circle at top, rgba(245, 158, 11, 0.10), transparent 26%),
+            radial-gradient(circle at 85% 15%, rgba(251, 191, 36, 0.08), transparent 20%),
+            radial-gradient(circle at 20% 70%, rgba(180, 83, 9, 0.06), transparent 22%),
+            linear-gradient(180deg, #0f0f10 0%, #131313 38%, #101010 100%);
+          color: white;
+        }
+
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(251, 191, 36, 0.22) #111111;
+        }
+
+        *::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
+
+        *::-webkit-scrollbar-track {
+          background: #111111;
+        }
+
+        *::-webkit-scrollbar-thumb {
+          background: rgba(251, 191, 36, 0.2);
+          border-radius: 999px;
+          border: 2px solid #111111;
+        }
+
+        details > summary {
+          list-style: none;
+        }
+
+        details > summary::-webkit-details-marker {
+          display: none;
+        }
+      `}</style>
+
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute left-[-8rem] top-[-8rem] h-72 w-72 rounded-full bg-amber-400/10 blur-3xl" />
+        <div className="absolute right-[-6rem] top-[10%] h-80 w-80 rounded-full bg-orange-500/10 blur-3xl" />
+        <div className="absolute bottom-[-8rem] left-[20%] h-72 w-72 rounded-full bg-amber-300/5 blur-3xl" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl">
+        <div className={`${sectionCard} mb-6 p-6 md:p-8`}>
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute left-4 top-4 h-5 w-5 border-l border-t border-amber-300/25" />
+            <div className="absolute right-4 top-4 h-5 w-5 border-r border-t border-amber-300/25" />
+            <div className="absolute bottom-4 left-4 h-5 w-5 border-b border-l border-amber-300/25" />
+            <div className="absolute bottom-4 right-4 h-5 w-5 border-b border-r border-amber-300/25" />
+          </div>
+
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-2xl">
+              <p className={`mb-3 text-[11px] text-[#b7a98b] ${mono}`}>Premium budgeting interface</p>
+              <h1
+                className="text-4xl leading-[1.05] text-[#f5ecde] md:text-6xl"
+                style={{ fontFamily: '"DM Serif Display", serif' }}
+              >
+                Budgeting AI
+              </h1>
+              <p className="mt-4 max-w-xl text-sm leading-7 text-[#9b927f] md:text-base">
+                Your onboarding profile has been loaded from local storage. Review the data, then launch the AI budgeting flow for one-question-at-a-time financial guidance.
               </p>
             </div>
-            <button
-              onClick={clearStoredData}
-              className="px-4 py-2 rounded-md border border-[#444] text-[#ddd]"
-            >
-              Clear local data
-            </button>
-          </div>
-        </div>
 
-        <div className="bg-[#1e1e1e] border border-[#2a2a2a] rounded-xl p-6">
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
-            <h2 className="text-xl font-semibold">Saved onboarding data</h2>
-            {!aiState && (
-              <button
-                onClick={startBudgeting}
-                disabled={starting}
-                className="bg-amber-500 text-[#141414] px-5 py-3 rounded-md font-semibold disabled:opacity-50"
-              >
-                {starting ? 'Starting...' : 'Start AI budgeting'}
-              </button>
-            )}
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-4 text-sm">
-            <div className="bg-[#151515] rounded-lg p-4 border border-[#2a2a2a]">
-              <h3 className="text-amber-400 mb-3">Personal</h3>
-              <p><strong>Name:</strong> {storedData.name}</p>
-              <p><strong>Age:</strong> {storedData.age}</p>
-              <p><strong>Gender:</strong> {storedData.gender}</p>
-              <p><strong>Caste:</strong> {storedData.caste}</p>
-              <p><strong>Life Stage:</strong> {storedData.lifeStage || 'Not answered'}</p>
-            </div>
-
-            <div className="bg-[#151515] rounded-lg p-4 border border-[#2a2a2a]">
-              <h3 className="text-amber-400 mb-3">Income</h3>
-              <p><strong>Monthly Allowance:</strong> {storedData.monthlyAllowance || '—'}</p>
-              <p><strong>Monthly Income:</strong> {storedData.monthlyIncome || '—'}</p>
-              <p><strong>Income Type:</strong> {storedData.incomeType || '—'}</p>
-              <p><strong>Dependents:</strong> {storedData.dependents || '—'}</p>
-              <p><strong>Monthly Pension:</strong> {storedData.monthlyPension || '—'}</p>
-            </div>
-
-            <div className="bg-[#151515] rounded-lg p-4 border border-[#2a2a2a]">
-              <h3 className="text-amber-400 mb-3">Expenses</h3>
-              <p><strong>Rent:</strong> {storedData.rent || '—'}</p>
-              <p><strong>Home Loan:</strong> {storedData.homeLoan || '—'}</p>
-              <p><strong>Utilities:</strong> {storedData.utilities || '—'}</p>
-              <p><strong>Internet:</strong> {storedData.internet || '—'}</p>
-              <p><strong>Food:</strong> {storedData.food || '—'}</p>
-              <p><strong>Transport:</strong> {storedData.transport || '—'}</p>
-            </div>
-
-            <div className="bg-[#151515] rounded-lg p-4 border border-[#2a2a2a]">
-              <h3 className="text-amber-400 mb-3">Savings / Protection</h3>
-              <p><strong>Saves Money:</strong> {boolText(storedData.savesMoney)}</p>
-              <p><strong>Approx Savings:</strong> {storedData.approxSavings || '—'}</p>
-              <p><strong>Invested Before:</strong> {boolText(storedData.investedBefore)}</p>
-              <p><strong>Investments:</strong> {storedData.investments.join(', ') || '—'}</p>
-              <p><strong>Health Insurance:</strong> {boolText(storedData.healthInsurance)}</p>
-              <p><strong>Life Insurance:</strong> {boolText(storedData.lifeInsurance)}</p>
-              <p><strong>Files Tax:</strong> {boolText(storedData.filesTax)}</p>
-              <p><strong>Wants Tax Save:</strong> {boolText(storedData.wantsTaxSave)}</p>
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <details className="bg-[#151515] rounded-lg p-4 border border-[#2a2a2a]">
-              <summary className="cursor-pointer text-[#ddd]">View raw JSON</summary>
-              <pre className="mt-4 overflow-auto text-xs text-green-300">
-                {JSON.stringify(storedData, null, 2)}
-              </pre>
-            </details>
-          </div>
-        </div>
-
-        {aiState && (
-          <div className="bg-[#1e1e1e] border border-[#2a2a2a] rounded-xl p-6">
-            <h2 className="text-xl font-semibold mb-4">AI budgeting flow</h2>
-
-            <div className="bg-[#151515] border border-[#2a2a2a] rounded-lg p-5">
-              <div className="inline-block px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs mb-4">
-                {aiState.reply_type}
-              </div>
-
-              {aiState.question && (
-                <p className="text-lg mb-4">{aiState.question}</p>
-              )}
-
-              {aiState.reply_type === 'question' && (
-                <div className="space-y-4">
-                  {renderDynamicAnswerInput()}
-                  <button
-                    onClick={submitAnswer}
-                    disabled={submitting}
-                    className="bg-amber-500 text-[#141414] px-5 py-3 rounded-md font-semibold disabled:opacity-50"
-                  >
-                    {submitting ? 'Submitting...' : 'Submit answer'}
-                  </button>
+            <div className="flex flex-wrap items-center gap-3">
+              {sessionId && (
+                <div className="rounded-full border border-amber-200/10 bg-amber-400/[0.04] px-4 py-2 text-[10px] text-amber-200/80 shadow-[0_0_24px_rgba(245,158,11,0.08)]">
+                  <span className={mono}>Session active</span>
                 </div>
               )}
-
-              {aiState.reply_type === 'advice' && (
-                <pre className="overflow-auto text-sm text-green-300">
-                  {JSON.stringify(aiState.advice, null, 2)}
-                </pre>
-              )}
+              <button onClick={clearStoredData} className={ghostBtn}>
+                Clear local data
+              </button>
             </div>
           </div>
-        )}
+        </div>
 
-        {savedAnswers.length > 0 && (
-          <div className="bg-[#1e1e1e] border border-[#2a2a2a] rounded-xl p-6">
-            <h2 className="text-xl font-semibold mb-4">Saved answers</h2>
-            <pre className="overflow-auto text-sm text-green-300">
-              {JSON.stringify(savedAnswers, null, 2)}
-            </pre>
+        <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="space-y-6">
+            <div className={`${sectionCard} p-6 md:p-8`}>
+              <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className={`mb-2 text-[11px] text-[#b7a98b] ${mono}`}>Stored profile</p>
+                  <h2
+                    className="text-3xl text-[#f5ecde]"
+                    style={{ fontFamily: '"DM Serif Display", serif' }}
+                  >
+                    Saved onboarding data
+                  </h2>
+                </div>
+
+                {!aiState && (
+                  <button
+                    onClick={startBudgeting}
+                    disabled={starting}
+                    className={primaryBtn}
+                  >
+                    {starting ? 'Starting...' : 'Start AI budgeting'}
+                  </button>
+                )}
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className={panelCard}>
+                  <p className={`mb-4 text-[11px] text-amber-300 ${mono}`}>Personal</p>
+                  {renderValue('Name', storedData.name)}
+                  {renderValue('Age', storedData.age)}
+                  {renderValue('Gender', storedData.gender)}
+                  {renderValue('Caste', storedData.caste)}
+                  {renderValue('Life stage', storedData.lifeStage || 'Not answered')}
+                </div>
+
+                <div className={panelCard}>
+                  <p className={`mb-4 text-[11px] text-amber-300 ${mono}`}>Income</p>
+                  {renderValue('Monthly allowance', storedData.monthlyAllowance)}
+                  {renderValue('Monthly income', storedData.monthlyIncome)}
+                  {renderValue('Income type', storedData.incomeType)}
+                  {renderValue('Dependents', storedData.dependents)}
+                  {renderValue('Monthly pension', storedData.monthlyPension)}
+                </div>
+
+                <div className={panelCard}>
+                  <p className={`mb-4 text-[11px] text-amber-300 ${mono}`}>Expenses</p>
+                  {renderValue('Rent', storedData.rent)}
+                  {renderValue('Home loan', storedData.homeLoan)}
+                  {renderValue('Utilities', storedData.utilities)}
+                  {renderValue('Internet', storedData.internet)}
+                  {renderValue('Food', storedData.food)}
+                  {renderValue('Transport', storedData.transport)}
+                </div>
+
+                <div className={panelCard}>
+                  <p className={`mb-4 text-[11px] text-amber-300 ${mono}`}>Savings / Protection</p>
+                  {renderValue('Saves money', boolText(storedData.savesMoney))}
+                  {renderValue('Approx savings', storedData.approxSavings)}
+                  {renderValue('Invested before', boolText(storedData.investedBefore))}
+                  {renderValue('Investments', storedData.investments.join(', ') || '—')}
+                  {renderValue('Health insurance', boolText(storedData.healthInsurance))}
+                  {renderValue('Life insurance', boolText(storedData.lifeInsurance))}
+                  {renderValue('Files tax', boolText(storedData.filesTax))}
+                  {renderValue('Wants tax save', boolText(storedData.wantsTaxSave))}
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <details className="rounded-[1.25rem] border border-amber-200/10 bg-[#131313] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                  <summary className={`cursor-pointer select-none text-[11px] text-[#d7c8a5] ${mono}`}>
+                    View raw JSON
+                  </summary>
+                  <pre className="mt-4 overflow-auto rounded-xl border border-amber-300/10 bg-[#0f0f0f] p-4 text-xs leading-6 text-emerald-300/90">
+                    {JSON.stringify(storedData, null, 2)}
+                  </pre>
+                </details>
+              </div>
+            </div>
           </div>
-        )}
+
+          <div className="space-y-6">
+            {aiState && (
+              <div className={`${sectionCard} p-6 md:p-8`}>
+                <div className="mb-6">
+                  <p className={`mb-2 text-[11px] text-[#b7a98b] ${mono}`}>Interactive assistant</p>
+                  <h2
+                    className="text-3xl text-[#f5ecde]"
+                    style={{ fontFamily: '"DM Serif Display", serif' }}
+                  >
+                    AI budgeting flow
+                  </h2>
+                </div>
+
+                <div className="rounded-[1.4rem] border border-amber-200/10 bg-[#131313]/95 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_0_0_1px_rgba(251,191,36,0.03),0_0_40px_rgba(245,158,11,0.04)]">
+                  <div className="mb-5 inline-flex rounded-full border border-amber-300/15 bg-amber-400/[0.04] px-3 py-1.5 text-[10px] text-amber-300 shadow-[0_0_24px_rgba(245,158,11,0.08)]">
+                    <span className={mono}>{aiState.reply_type}</span>
+                  </div>
+
+                  {aiState.question && (
+                    <p className="mb-5 text-lg leading-8 text-[#f2eadc]">
+                      {aiState.question}
+                    </p>
+                  )}
+
+                  {aiState.reply_type === 'question' && (
+                    <div className="space-y-4">
+                      {renderDynamicAnswerInput()}
+                      <button
+                        onClick={submitAnswer}
+                        disabled={submitting}
+                        className={primaryBtn}
+                      >
+                        {submitting ? 'Submitting...' : 'Submit answer'}
+                      </button>
+                    </div>
+                  )}
+
+                  {aiState.reply_type === 'advice' && (
+                    <pre className="overflow-auto rounded-xl border border-amber-300/10 bg-[#0f0f0f] p-4 text-sm leading-7 text-emerald-300/90">
+                      {JSON.stringify(aiState.advice, null, 2)}
+                    </pre>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {savedAnswers.length > 0 && (
+              <div className={`${sectionCard} p-6 md:p-8`}>
+                <div className="mb-6">
+                  <p className={`mb-2 text-[11px] text-[#b7a98b] ${mono}`}>Conversation memory</p>
+                  <h2
+                    className="text-3xl text-[#f5ecde]"
+                    style={{ fontFamily: '"DM Serif Display", serif' }}
+                  >
+                    Saved answers
+                  </h2>
+                </div>
+
+                <pre className="overflow-auto rounded-[1.25rem] border border-amber-300/10 bg-[#0f0f0f] p-5 text-sm leading-7 text-emerald-300/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                  {JSON.stringify(savedAnswers, null, 2)}
+                </pre>
+              </div>
+            )}
+
+            {!aiState && (
+              <div className={`${sectionCard} p-6 md:p-8`}>
+                <div className="rounded-[1.4rem] border border-dashed border-amber-300/15 bg-[#131313]/90 p-6">
+                  <p className={`mb-2 text-[11px] text-[#b7a98b] ${mono}`}>Awaiting launch</p>
+                  <h3
+                    className="text-2xl text-[#f5ecde]"
+                    style={{ fontFamily: '"DM Serif Display", serif' }}
+                  >
+                    Ready to begin
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-[#9b927f]">
+                    Start the AI budgeting session to begin a guided one-question-at-a-time financial interview based on the onboarding data already loaded above.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

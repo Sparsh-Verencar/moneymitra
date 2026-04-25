@@ -14,7 +14,8 @@ import {
   Search,
   Sparkles,
   IndianRupee,
-} from 'lucide-react';
+  Bot,
+} from 'lucide-react';;
 import { useRouter } from 'next/navigation';
 import { topics } from '@/lib/data/financialTopics';
 
@@ -101,6 +102,7 @@ const HomePage = () => {
       </nav>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12">
+        
         <section className="mb-10 rounded-[2rem] border border-white/8 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.10),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-6 sm:p-8 md:p-10">
           <div className="grid gap-8 md:grid-cols-[1.15fr_0.85fr] md:items-end">
             <div>
@@ -215,6 +217,53 @@ const HomePage = () => {
             </div>
           ))}
         </section>
+        <section className="mt-12">
+  <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <div className="text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-300 sm:text-xs sm:tracking-[0.3em]">
+        AI Help
+      </div>
+      <h2 className="mt-2 text-xl font-semibold tracking-tight text-white sm:text-2xl md:text-3xl">
+        Personalized support tools
+      </h2>
+      <p className="mt-2 max-w-2xl text-sm leading-7 text-[#a8a091] sm:text-base">
+        Use AI-guided tools to understand your money better and take action with more confidence.
+      </p>
+    </div>
+  </div>
+
+  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <article
+      onClick={() => router.push('/budgeting')}
+     className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
+          <Bot className="text-amber-400" size={22} strokeWidth={1.75} />
+        </div>
+
+        <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
+          AI Tool
+        </div>
+      </div>
+
+      <h3 className="mt-6 text-xl font-semibold tracking-tight text-white group-hover:text-amber-300 sm:text-2xl">
+        AI Budgeting
+      </h3>
+
+      <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
+        Share your income, expenses, savings, and goals to get a guided budgeting flow with one question at a time.
+      </p>
+
+      <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.28em]">
+          Open AI budgeting
+        </span>
+        <ArrowUpRight size={18} />
+      </div>
+    </article>
+  </div>
+</section>
       </main>
 
       <footer className="border-t border-white/8 px-4 py-8 sm:px-6">
