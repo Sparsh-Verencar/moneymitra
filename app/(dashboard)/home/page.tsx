@@ -13,7 +13,7 @@ import {
   LayoutGrid
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { topics } from '@/lib/data/financialTopics';
+import { topics } from '@/app/lib/financialTopics';
 
 // Friendly icon mapping
 const getIcon = (id: string | number) => {

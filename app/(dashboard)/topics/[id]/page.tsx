@@ -3,7 +3,7 @@
 import React from 'react';
 import { Home, ChevronRight } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
-import { topics } from '@/lib/data/financialTopics';
+import { topics } from '@/app/lib/financialTopics';
 
 const TopicsPage = () => {
   const router = useRouter();

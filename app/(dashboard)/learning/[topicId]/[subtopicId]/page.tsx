@@ -1,12 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Home, ChevronRight, ChevronLeft } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Home } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
-import { topics } from '@/lib/data/financialTopics';
+import { topics } from '@/app/lib/financialTopics';
 import Timeline from '@/components/learning/Timeline';
 import ConceptCard from '@/components/learning/ConceptCard';
 import AIChatPanel from '@/components/learning/AIChatPanel';
+import { db, auth } from '@/app/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const LearningPage = () => {
   const router = useRouter();
@@ -17,12 +20,35 @@ const LearningPage = () => {
   const topic = topics.find(t => t.id === topicId);
   const subtopic = topic?.subtopics.find(s => s.id === subtopicId);
   
-  // Initialize with first concept, fallback to 0 if undefined
   const initialConceptId = subtopic?.concepts[0]?.id ?? 0;
   const [selectedConceptId, setSelectedConceptId] = useState<number>(initialConceptId);
   const [chatOpen, setChatOpen] = useState(false);
-  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
-  const [chatInput, setChatInput] = useState('');
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch user profile from Firebase
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const docRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            setUserProfile({
+              id: user.uid,
+              ...docSnap.data()
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching profile:', error);
+        }
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   if (!topic || !subtopic) {
     return <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">Content not found</div>;
@@ -32,39 +58,6 @@ const LearningPage = () => {
   const currentIndex = subtopic.concepts.findIndex(c => c.id === selectedConceptId);
   const isFirstConcept = currentIndex === 0;
   const isLastConcept = currentIndex === subtopic.concepts.length - 1;
-
-  const handleSendMessage = () => {
-    if (!chatInput.trim()) return;
-    
-    const userMsg = { role: 'user' as const, content: chatInput };
-    setMessages(prev => [...prev, userMsg]);
-    setChatInput('');
-
-    setTimeout(() => {
-      const aiResponse = {
-        role: 'assistant' as const,
-        content: generateAIResponse(chatInput, selectedConcept)
-      };
-      setMessages(prev => [...prev, aiResponse]);
-    }, 500);
-  };
-
-  const generateAIResponse = (query: string, concept: typeof subtopic.concepts[0]) => {
-    const responses: Record<string, string> = {
-      'example': 'This is an example AI response about your financial question.',
-      'budget': 'A budget is a monthly or yearly plan showing how much money you earn and how much you spend. It helps you save money and achieve financial goals.',
-      'invest': 'Investing means putting your money into assets like stocks, mutual funds, or bonds to grow your wealth over time. Start with mutual funds if you\'re a beginner.',
-      'tax': 'Taxes are mandatory contributions to the government. As a salaried person in India, you can reduce your tax through deductions like 80C (PPF, ELSS), 80D (health insurance).'
-    };
-
-    for (let key in responses) {
-      if (query.toLowerCase().includes(key)) {
-        return responses[key];
-      }
-    }
-    
-    return `Great question about ${concept.title}! Can you tell me more about what aspect interests you most?`;
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
@@ -152,14 +145,11 @@ const LearningPage = () => {
           </div>
 
           {/* AI Chat Sidebar */}
-          {chatOpen && (
+          {chatOpen && userProfile && (
             <AIChatPanel
               concept={selectedConcept}
-              messages={messages}
-              chatInput={chatInput}
-              onChatInputChange={setChatInput}
-              onSendMessage={handleSendMessage}
               onClose={() => setChatOpen(false)}
+              userProfile={userProfile}
             />
           )}
         </div>

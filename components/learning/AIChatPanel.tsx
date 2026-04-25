@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { X, Send } from 'lucide-react';
 import type { Concept } from './ConceptCard';
 
@@ -11,21 +11,56 @@ interface Message {
 
 interface AIChatPanelProps {
   concept: Concept;
-  messages: Message[];
-  chatInput: string;
-  onChatInputChange: (value: string) => void;
-  onSendMessage: () => void;
   onClose: () => void;
+  userProfile: any; // Pass user profile from parent
 }
 
 const AIChatPanel: React.FC<AIChatPanelProps> = ({
   concept,
-  messages,
-  chatInput,
-  onChatInputChange,
-  onSendMessage,
-  onClose
+  onClose,
+  userProfile
 }) => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [chatInput, setChatInput] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const onSendMessage = async () => {
+    if (!chatInput.trim()) return;
+
+    // Add user message
+    const userMessage: Message = { role: 'user', content: chatInput };
+    setMessages(prev => [...prev, userMessage]);
+    setChatInput('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:8000/chat/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: userProfile.id,
+          message: chatInput,
+          user_profile: userProfile
+        })
+      });
+
+      const data = await response.json();
+      const aiMessage: Message = {
+        role: 'assistant',
+        content: data.response
+      };
+      setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error. Please try again.'
+      }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="w-96 border-l border-amber-500 border-opacity-20 pl-8 flex flex-col">
       <div className="flex items-center justify-between mb-6">
@@ -42,7 +77,7 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({
       <div className="flex-1 space-y-4 mb-6 overflow-y-auto">
         {messages.length === 0 ? (
           <div className="text-slate-400 text-sm">
-            Ask me anything about {concept.title}. I'm here to help clarify concepts.
+            Ask me anything about personal finance in India. I'm here to help based on your financial situation.
           </div>
         ) : (
           messages.map((msg, idx) => (
@@ -60,6 +95,13 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({
             </div>
           ))
         )}
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-slate-800 text-slate-100 border border-amber-500 border-opacity-20 px-4 py-3 text-sm rounded">
+              Thinking...
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Input */}
@@ -67,15 +109,17 @@ const AIChatPanel: React.FC<AIChatPanelProps> = ({
         <input
           type="text"
           value={chatInput}
-          onChange={(e) => onChatInputChange(e.target.value)}
+          onChange={(e) => setChatInput(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && onSendMessage()}
           placeholder="Ask a question..."
-          className="flex-1 bg-slate-800 border border-amber-500 border-opacity-20 text-white text-sm px-3 py-2 focus:border-opacity-40 focus:outline-none transition"
+          disabled={loading}
+          className="flex-1 bg-slate-800 border border-amber-500 border-opacity-20 text-white text-sm px-3 py-2 focus:border-opacity-40 focus:outline-none transition disabled:opacity-50"
           style={{ borderRadius: '2px' }}
         />
         <button
           onClick={onSendMessage}
-          className="p-2 border border-amber-500 text-amber-400 hover:bg-amber-500 hover:bg-opacity-10 transition"
+          disabled={loading}
+          className="p-2 border border-amber-500 text-amber-400 hover:bg-amber-500 hover:bg-opacity-10 transition disabled:opacity-50"
           style={{ borderRadius: '2px' }}
         >
           <Send size={16} />
