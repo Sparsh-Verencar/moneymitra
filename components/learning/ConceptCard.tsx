@@ -7,6 +7,7 @@ export interface Concept {
   id: number;
   title: string;
   content: string;
+  keyPoints?: string[]; // ✅ add this
 }
 
 interface ConceptCardProps {
@@ -33,7 +34,6 @@ const ConceptCard: React.FC<ConceptCardProps> = ({
         <div className="prose prose-invert prose-amber max-w-none">
           <ReactMarkdown
             components={{
-              // Custom styling for Markdown elements to keep it parent-friendly
               p: ({ children }) => (
                 <p className="text-sm sm:text-base md:text-lg leading-7 sm:leading-8 text-[#b7b1a6] mb-4">
                   {children}
@@ -58,6 +58,26 @@ const ConceptCard: React.FC<ConceptCardProps> = ({
             {concept.content}
           </ReactMarkdown>
         </div>
+
+        {/* ✅ Key Points Section */}
+        {concept.keyPoints && concept.keyPoints.length > 0 && (
+          <div className="space-y-3">
+            <h3 className="text-xs sm:text-sm font-mono uppercase tracking-[0.3em] text-amber-400">
+              Key Points
+            </h3>
+            <ul className="space-y-2">
+              {concept.keyPoints.map((point, index) => (
+                <li
+                  key={index}
+                  className="flex items-start gap-2 text-sm sm:text-base text-[#b7b1a6]"
+                >
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-amber-400 flex-shrink-0" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Progress Section */}
         <div className="pt-5 border-t border-white/10 flex items-center justify-between">
