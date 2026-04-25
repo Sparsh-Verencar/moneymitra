@@ -150,7 +150,7 @@ export default function Login() {
     <div className="min-h-screen bg-[#141414] flex items-center justify-center px-4 relative overflow-hidden">
       {/* Subtle ambient glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[520px] h-[520px] rounded-full bg-amber-500/8 blur-3xl -translate-y-10" />
+        <div className="w-130 h-130 rounded-full bg-amber-500/8 blur-3xl -translate-y-10" />
       </div>
 
       {/* Card */}
