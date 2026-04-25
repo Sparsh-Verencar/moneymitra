@@ -1,9 +1,15 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import LandingPage from '@/components/pages/LandingPage';
 
 export default function Home() {
-  return (
-    <div className="yolo flex flex-col w-screen h-screen items-center justify-center text-8xl">
-      landing
-    </div>
-  );
+  const router = useRouter();
+
+  const handleEnter = () => {
+    router.push('/home');
+  };
+
+  return <LandingPage onEnter={handleEnter} />;
 }
