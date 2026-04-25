@@ -22,8 +22,11 @@ const LearningPage = () => {
 
   const [selectedConceptId, setSelectedConceptId] = useState(initialConceptId);
   const [chatOpen, setChatOpen] = useState(false);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<
+    { role: 'user' | 'assistant'; content: string }[]
+  >([]);
   const [chatInput, setChatInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false); // ← moved to component level
 
   if (!topic || !subtopic) {
     return (
@@ -44,22 +47,48 @@ const LearningPage = () => {
   const isFirstConcept = currentIndex === 0;
   const isLastConcept = currentIndex === subtopic.concepts.length - 1;
 
-  const handleSendMessage = () => {
+  // ← clean top-level async function, no nesting
+  const handleSendMessage = async () => {
     if (!chatInput.trim()) return;
 
-    const userMsg = { role: 'user', content: chatInput };
+    const userMsg = { role: 'user' as const, content: chatInput };
     setMessages((prev) => [...prev, userMsg]);
     setChatInput('');
+    setIsTyping(true);
 
-    setTimeout(() => {
+    try {
+      const res = await fetch('http://localhost:8000/learning/chat/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: chatInput,
+          history: messages,
+          topic: topic.title,
+          subtopic: subtopic.title,
+          concepts: subtopic.concepts.map((c) => ({
+            title: c.title,
+            content: c.content,
+            keyPoints: c.keyPoints ?? [],
+          })),
+        }),
+      });
+
+      const data = await res.json();
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant' as const, content: data.reply },
+      ]);
+    } catch {
       setMessages((prev) => [
         ...prev,
         {
-          role: 'assistant',
-          content: `Let's break this down simply: ${chatInput}`,
+          role: 'assistant' as const,
+          content: 'Something went wrong. Please try again.',
         },
       ]);
-    }, 500);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   return (
@@ -169,6 +198,7 @@ const LearningPage = () => {
                 onChatInputChange={setChatInput}
                 onSendMessage={handleSendMessage}
                 onClose={() => setChatOpen(false)}
+                isTyping={isTyping}
               />
             </div>
           )}
