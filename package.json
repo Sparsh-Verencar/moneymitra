@@ -10,12 +10,17 @@
   },
   "dependencies": {
     "firebase": "^12.12.1",
+<<<<<<< HEAD
+=======
+    "lucide-react": "^1.11.0",
+>>>>>>> a0716f7d913f871a542c1caf7a4bb64f35b10705
     "next": "16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/estree": "^1.0.8",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
