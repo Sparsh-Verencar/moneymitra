@@ -11,5 +11,5 @@ export default function Home() {
     router.push('/home');
   };
 
-  return <LandingPage onEnter={handleEnter} />;
+  return <LandingPage />;
 }
