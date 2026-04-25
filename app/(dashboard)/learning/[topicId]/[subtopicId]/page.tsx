@@ -93,7 +93,7 @@ const LearningPage = () => {
 
         <div className="flex flex-col md:flex-row gap-6 md:gap-8">
           {/* DESKTOP TIMELINE */}
-          <div className="hidden md:block w-[260px] shrink-0">
+          <div className="hidden md:block w-65 shrink-0">
             <Timeline
               concepts={subtopic.concepts}
               selectedConceptId={selectedConceptId}
@@ -156,7 +156,7 @@ const LearningPage = () => {
 
           {/* CHAT PANEL */}
           {chatOpen && (
-            <div className="w-full md:w-[360px] shrink-0">
+            <div className="w-full md:w-90 shrink-0">
               <AIChatPanel
                 concept={selectedConcept}
                 messages={messages}
