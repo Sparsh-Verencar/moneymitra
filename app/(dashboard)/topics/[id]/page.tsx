@@ -63,9 +63,9 @@ const TopicsPage = () => {
               onClick={() => handleSelectSubtopic(subtopic)}
               className="group cursor-pointer"
             >
-              <div className="relative h-[170px] sm:h-[190px] rounded-[1.5rem] border border-white/10 bg-[#111111] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:bg-[#151515]">
+              <div className="relative h-42.5 sm:h-47.5 rounded-3xl border border-white/10 bg-[#111111] p-5 sm:p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:bg-[#151515]">
                 {/* hover glow */}
-                <div className="absolute inset-0 rounded-[1.5rem] bg-amber-500 opacity-0 group-hover:opacity-[0.04] transition-opacity" />
+                <div className="absolute inset-0 rounded-3xl bg-amber-500 opacity-0 group-hover:opacity-[0.04] transition-opacity" />
 
                 <div className="relative z-10">
                   <h2 className="text-xl sm:text-2xl font-semibold text-white group-hover:text-amber-300 transition">

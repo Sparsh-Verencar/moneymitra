@@ -141,8 +141,12 @@ const LandingPage = () => {
                   whileHover={reduceMotion ? undefined : { y: -4 }}
                   className="rounded-2xl border border-white/8 bg-white/3 p-5 text-left shadow-[0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur transition-colors hover:bg-white/5"
                 >
-                  <div className="text-sm font-semibold text-white">{title}</div>
-                  <div className="mt-2 text-sm leading-6 text-[#a8a091]">{desc}</div>
+                  <div className="text-sm font-semibold text-white">
+                    {title}
+                  </div>
+                  <div className="mt-2 text-sm leading-6 text-[#a8a091]">
+                    {desc}
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -170,14 +174,15 @@ const LandingPage = () => {
               <br /> not for bankers.
             </h2>
             <p className="mt-6 max-w-xl text-sm leading-7 text-[#b7b1a6] sm:text-base sm:leading-8 md:text-lg">
-              Most financial apps bury people in jargon. MoneyMitra removes the noise and gives
-              practical guidance that a family can actually use.
+              Most financial apps bury people in jargon. MoneyMitra removes the
+              noise and gives practical guidance that a family can actually use.
             </p>
 
             <div className="mt-8 flex items-start gap-4 rounded-2xl border border-amber-500/15 bg-amber-500/8 p-5">
               <Users className="mt-0.5 shrink-0 text-amber-300" size={22} />
               <p className="text-sm leading-7 text-[#d2c9bb] italic md:text-base">
-                We are trying to make money conversations easier inside the home, not harder.
+                We are trying to make money conversations easier inside the
+                home, not harder.
               </p>
             </div>
           </motion.div>
@@ -194,8 +199,8 @@ const LandingPage = () => {
               Most advice is either too technical or too sales-driven.
             </h2>
             <p className="mt-6 text-sm leading-7 text-[#b7b1a6] sm:text-base sm:leading-8 md:text-lg">
-              Users are left confused by terms, pushed into bad products, or given generic plans
-              that do not match their situation.
+              Users are left confused by terms, pushed into bad products, or
+              given generic plans that do not match their situation.
             </p>
 
             <div className="mt-8 space-y-4">
@@ -204,7 +209,10 @@ const LandingPage = () => {
                 'High-pressure agents and commission bias',
                 'Generic advice that ignores life stage and goals',
               ].map((item) => (
-                <div key={item} className="flex items-start gap-3 text-sm text-[#d0c7b8] md:text-base">
+                <div
+                  key={item}
+                  className="flex items-start gap-3 text-sm text-[#d0c7b8] md:text-base"
+                >
                   <span className="mt-1 text-amber-400">✕</span>
                   <span>{item}</span>
                 </div>
@@ -237,13 +245,17 @@ const LandingPage = () => {
                   key={title}
                   variants={cardVariants}
                   whileHover={reduceMotion ? undefined : { y: -4, scale: 1.01 }}
-                  className="group rounded-3xl border border-white/8 bg-white/3 p-7 transition hover:border-amber-500/25 hover:bg-white/[0.05]"
+                  className="group rounded-3xl border border-white/8 bg-white/3 p-7 transition hover:border-amber-500/25 hover:bg-white/5"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-300 transition-transform group-hover:scale-110">
                     <Icon size={22} />
                   </div>
-                  <h3 className="mt-6 text-xl font-semibold text-white">{title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-[#a8a091] md:text-base">{text}</p>
+                  <h3 className="mt-6 text-xl font-semibold text-white">
+                    {title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-[#a8a091] md:text-base">
+                    {text}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -253,7 +265,7 @@ const LandingPage = () => {
         {/* CTA */}
         <section className="overflow-hidden px-4 py-16 sm:px-6 md:py-20">
           <motion.div
-            className="mx-auto max-w-6xl rounded-[2rem] border border-amber-500/15 bg-gradient-to-br from-amber-500/10 via-white/3 to-transparent p-6 sm:p-8 md:p-12"
+            className="mx-auto max-w-6xl rounded-4xl border border-amber-500/15 bg-linear-to-br from-amber-500/10 via-white/3 to-transparent p-6 sm:p-8 md:p-12"
             initial={{ opacity: 0, y: 36, scale: 0.97 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.85, ease: easeOutQuint }}
@@ -269,7 +281,8 @@ const LandingPage = () => {
                   Clear the confusion and make better money decisions.
                 </h2>
                 <p className="mt-5 max-w-2xl text-sm leading-7 text-[#b7b1a6] sm:text-base sm:leading-8 md:text-lg">
-                  MoneyMitra is designed to feel calm, direct, and usable from the first screen.
+                  MoneyMitra is designed to feel calm, direct, and usable from
+                  the first screen.
                 </p>
               </div>
 
