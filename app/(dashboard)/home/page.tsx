@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ChevronRight,
   ChevronLeft,
@@ -9,42 +9,77 @@ import {
   Wallet,
   ShieldCheck,
   Receipt,
-  User,
+  User as UserIcon,
   LayoutGrid,
   Search,
   Sparkles,
   IndianRupee,
+  Bot,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { topics } from '@/app/lib/financialTopics';
+import { topics } from '../../lib/financialTopics';
+import { loadUserProfile } from '../../lib/loadUserProfile';
+import { useAuthUser } from '../../context/AuthContext';
 
 const getIcon = (id: string | number) => {
   const iconId = String(id).toLowerCase();
   switch (iconId) {
     case 'investing':
-      return (
-        <TrendingUp className="text-amber-400" size={22} strokeWidth={1.75} />
-      );
+      return <TrendingUp className="text-amber-400" size={22} strokeWidth={1.75} />;
     case 'budgeting':
       return <Wallet className="text-amber-400" size={22} strokeWidth={1.75} />;
     case 'insurance':
-      return (
-        <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />
-      );
+      return <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />;
     case 'taxes':
-      return (
-        <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />
-      );
+      return <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />;
     default:
-      return (
-        <LayoutGrid className="text-amber-400" size={22} strokeWidth={1.75} />
-      );
+      return <LayoutGrid className="text-amber-400" size={22} strokeWidth={1.75} />;
   }
 };
 
 const HomePage = () => {
   const router = useRouter();
   const carouselRef = useRef<HTMLDivElement | null>(null);
+
+  const { user, loading: loadingAuth } = useAuthUser();
+  const [userName, setUserName] = useState<string>('');
+  const [loadingUser, setLoadingUser] = useState<boolean>(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      // Wait until auth has finished resolving
+      if (loadingAuth) return;
+
+      // If no user, we can stop loading profile and just show generic UI
+      if (!user) {
+        if (!cancelled) {
+          setUserName('');
+          setLoadingUser(false);
+        }
+        return;
+      }
+
+      try {
+        const profile = await loadUserProfile();
+        if (!cancelled) {
+          setUserName(profile?.name || user.phoneNumber || '');
+        }
+      } catch (e) {
+        console.error('Failed to load user profile', e);
+        if (!cancelled) setUserName(user.phoneNumber || '');
+      } finally {
+        if (!cancelled) setLoadingUser(false);
+      }
+    }
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, loadingAuth]);
 
   const stats = useMemo(
     () => [
@@ -96,14 +131,16 @@ const HomePage = () => {
             <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/3 px-3 py-2 md:justify-start">
               <div className="text-right leading-tight">
                 <div className="text-[9px] uppercase tracking-[0.2em] text-amber-300 sm:text-[10px] sm:tracking-[0.25em]">
-                  Welcome back
+                  {loadingAuth ? 'Checking session' : 'Welcome back'}
                 </div>
                 <div className="text-sm font-medium text-white">
-                  Suyash Khobrekar
+                  {loadingAuth || loadingUser
+                    ? 'Loading…'
+                    : userName || (user ? user.phoneNumber || 'User' : 'Guest')}
                 </div>
               </div>
               <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#141414]">
-                <User size={18} className="text-amber-300" />
+                <UserIcon size={18} className="text-amber-300" />
               </div>
             </div>
           </div>
@@ -122,9 +159,8 @@ const HomePage = () => {
                 Build financial confidence step by step.
               </h1>
               <p className="mt-5 max-w-2xl text-sm leading-7 text-[#b7b1a6] sm:text-base sm:leading-8 md:text-lg">
-                Start with a topic, open its subtopics, and move through
-                concepts in a guided learning flow. The language stays simple.
-                The content stays India-specific.
+                Start with a topic, open its subtopics, and move through concepts in a guided
+                learning flow. The language stays simple. The content stays India-specific.
               </p>
             </div>
 
@@ -226,6 +262,124 @@ const HomePage = () => {
             </div>
           ))}
         </section>
+
+          <section className="mt-12">
+          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-300 sm:text-xs sm:tracking-[0.3em]">
+                AI Help
+              </div>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-white sm:text-2xl md:text-3xl">
+                Personalized support tools
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-7 text-[#a8a091] sm:text-base">
+                Use AI-guided tools to understand your money better and take action with more
+                confidence.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {/* AI Budgeting (existing glowing card) */}
+            <article
+              onClick={() => router.push('/budgeting')}
+              className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
+                  <Bot className="text-amber-400" size={22} strokeWidth={1.75} />
+                </div>
+
+                <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
+                  AI Tool
+                </div>
+              </div>
+
+              <h3 className="mt-6 text-xl font-semibold tracking-tight text-white group-hover:text-amber-300 sm:text-2xl">
+                AI Budgeting
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
+                Share your income, expenses, savings, and goals to get a guided budgeting flow with
+                one question at a time.
+              </p>
+
+              <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.28em]">
+                  Open AI budgeting
+                </span>
+                <ArrowUpRight size={18} />
+              </div>
+            </article>
+
+            {/* Tax Sections card */}
+            <article
+              onClick={() => router.push('/tax-sections')}
+              className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
+                  <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />
+                </div>
+
+                <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
+                  Tax Sections
+                </div>
+              </div>
+
+              <h3 className="mt-6 text-xl font-semibold tracking-tight text-white group-hover:text-amber-300 sm:text-2xl">
+                Tax Sections Guide
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
+                Browse key Indian tax sections like 80C, 80D, 24(b), and HRA with simple
+                explanations and examples.
+              </p>
+
+              <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.28em]">
+                  Open tax sections
+                </span>
+                <ArrowUpRight size={18} />
+              </div>
+            </article>
+
+            {/* Tax Planner card (dynamic route) */}
+            <article
+              onClick={() => {
+                const userId = user?.uid || user?.id || 'demo-user';
+                router.push(`/tax-planner/${userId}`);
+              }}
+              className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
+                  <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />
+                </div>
+
+                <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
+                  Tax Calculator
+                </div>
+              </div>
+
+              <h3 className="mt-6 text-xl font-semibold tracking-tight text-white group-hover:text-amber-300 sm:text-2xl">
+                Tax Planner & Calculator
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
+                Use your profile to run old vs new regime checks and estimate how different tax
+                moves could change your payable tax.
+              </p>
+
+              <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.28em]">
+                  Open tax planner
+                </span>
+                <ArrowUpRight size={18} />
+              </div>
+            </article>
+          </div>
+        </section>
+
       </main>
 
       <footer className="border-t border-white/8 px-4 py-8 sm:px-6">

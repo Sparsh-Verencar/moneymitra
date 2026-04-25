@@ -1,0 +1,29 @@
+{
+  "onboarding": {
+    "name": "Rahul Sharma",
+    "age": "29",
+    "gender": "Male",
+    "caste": "General",
+    "lifeStage": "Working Professional",
+    "monthlyAllowance": "0",
+    "monthlyIncome": "75000",
+    "incomeType": "salary",
+    "dependents": "2",
+    "monthlyPension": "0",
+    "rent": "18000",
+    "homeLoan": "0",
+    "utilities": "3000",
+    "internet": "1000",
+    "food": "8000",
+    "transport": "4000",
+    "savesMoney": true,
+    "approxSavings": "15000",
+    "investedBefore": true,
+    "investments": ["EPF", "PPF", "Mutual Funds"],
+    "healthInsurance": true,
+    "lifeInsurance": false,
+    "filesTax": true,
+    "wantsTaxSave": true
+  },
+  "question": "How can I save tax this year?"
+}
