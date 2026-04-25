@@ -129,19 +129,24 @@ const LearningPage = () => {
                 </button>
 
                 <button
-                  disabled={isLastConcept}
-                  onClick={() =>
-                    setSelectedConceptId(
-                      subtopic.concepts[currentIndex + 1]?.id,
-                    )
-                  }
+                  onClick={() => {
+                    if (isLastConcept) {
+                      router.push(
+                        `/quiz?topicId=${topic.id}&subtopicId=${subtopic.id}`,
+                      );
+                    } else {
+                      setSelectedConceptId(
+                        subtopic.concepts[currentIndex + 1]?.id,
+                      );
+                    }
+                  }}
                   className={`px-5 py-3 text-sm rounded-xl border transition ${
                     isLastConcept
-                      ? 'border-white/10 text-[#555]'
+                      ? 'border-amber-400 text-white hover:bg-white/5'
                       : 'border-white/10 hover:border-amber-400 text-white hover:bg-white/5'
                   }`}
                 >
-                  Next →
+                  {isLastConcept ? 'Take a Quiz' : 'Next →'}
                 </button>
               </div>
 

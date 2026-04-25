@@ -24,7 +24,6 @@ const ConceptCard: React.FC<ConceptCardProps> = ({
   return (
     <div className="flex-1 rounded-[1.75rem] border border-white/10 bg-white/5 backdrop-blur p-5 sm:p-6 md:p-8 lg:p-10 overflow-y-auto">
       <div className="max-w-3xl space-y-6 sm:space-y-7">
-        
         {/* Title */}
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white font-serif">
           {concept.title}
@@ -40,13 +39,19 @@ const ConceptCard: React.FC<ConceptCardProps> = ({
                 </p>
               ),
               strong: ({ children }) => (
-                <strong className="text-amber-400 font-semibold">{children}</strong>
+                <strong className="text-amber-400 font-semibold">
+                  {children}
+                </strong>
               ),
               ul: ({ children }) => (
-                <ul className="list-disc list-inside space-y-2 mb-4 text-[#b7b1a6]">{children}</ul>
+                <ul className="list-disc list-inside space-y-2 mb-4 text-[#b7b1a6]">
+                  {children}
+                </ul>
               ),
               li: ({ children }) => (
-                <li className="text-sm sm:text-base leading-relaxed">{children}</li>
+                <li className="text-sm sm:text-base leading-relaxed">
+                  {children}
+                </li>
               ),
               blockquote: ({ children }) => (
                 <div className="border-l-4 border-amber-600/50 pl-4 py-1 italic text-[#8f877a] bg-amber-900/5 my-6">
@@ -71,7 +76,7 @@ const ConceptCard: React.FC<ConceptCardProps> = ({
                   key={index}
                   className="flex items-start gap-2 text-sm sm:text-base text-[#b7b1a6]"
                 >
-                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-amber-400 flex-shrink-0" />
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" />
                   <span>{point}</span>
                 </li>
               ))}
@@ -85,16 +90,15 @@ const ConceptCard: React.FC<ConceptCardProps> = ({
             Lesson {conceptIndex + 1} of {totalConcepts}
           </p>
 
-          <div className="w-24 sm:w-32 h-[3px] bg-white/10 rounded-full overflow-hidden">
+          <div className="w-24 sm:w-32 h-0.75 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-amber-400 to-cyan-400 transition-all duration-500"
+              className="h-full bg-linear-to-r from-amber-400 to-cyan-400 transition-all duration-500"
               style={{
                 width: `${((conceptIndex + 1) / totalConcepts) * 100}%`,
               }}
             />
           </div>
         </div>
-
       </div>
     </div>
   );

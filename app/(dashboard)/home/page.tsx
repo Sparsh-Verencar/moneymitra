@@ -111,7 +111,7 @@ const HomePage = () => {
       </nav>
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12">
-        <section className="mb-10 rounded-[2rem] border border-white/8 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.10),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-6 sm:p-8 md:p-10">
+        <section className="mb-10 rounded-4xl border border-white/8 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.10),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.015))] p-6 sm:p-8 md:p-10">
           <div className="grid gap-8 md:grid-cols-[1.15fr_0.85fr] md:items-end">
             <div>
               <div className="mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-amber-500/15 bg-amber-500/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-300 sm:text-xs sm:tracking-[0.25em]">
@@ -183,7 +183,7 @@ const HomePage = () => {
               <article
                 key={topic.id}
                 onClick={() => router.push(`/topics/${topic.id}`)}
-                className="group w-[82vw] max-w-[320px] shrink-0 snap-start cursor-pointer rounded-[1.5rem] border border-white/8 bg-[#111111] p-5 transition duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:bg-[#151515] sm:w-[300px] md:w-[330px] md:p-6"
+                className="group w-[82vw] max-w-[320px] shrink-0 snap-start cursor-pointer rounded-3xl border border-white/8 bg-[#111111] p-5 transition duration-300 hover:-translate-y-1 hover:border-amber-500/30 hover:bg-[#151515] sm:w-75 md:w-82.5 md:p-6"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
