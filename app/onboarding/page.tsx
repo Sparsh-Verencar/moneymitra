@@ -647,7 +647,7 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
           key={i}
           className={`h-1 rounded-full transition-all duration-500 ${
             i < step ? 'bg-amber-500' : 'bg-[#2a2a2a]'
-          } ${i === step - 1 ? 'flex-[2]' : 'flex-1'}`}
+          } ${i === step - 1 ? 'flex-2' : 'flex-1'}`}
         />
       ))}
     </div>
@@ -806,7 +806,7 @@ export default function Onboarding() {
     <div className="min-h-screen bg-[#141414] flex flex-col items-center justify-start px-4 py-10 relative overflow-hidden">
       {/* Ambient glow */}
       <div className="fixed inset-0 flex items-start justify-center pointer-events-none">
-        <div className="w-[500px] h-[400px] rounded-full bg-amber-500/5 blur-3xl translate-y-20" />
+        <div className="w-125 h-100 rounded-full bg-amber-500/5 blur-3xl translate-y-20" />
       </div>
 
       <div className="relative w-full max-w-sm">
