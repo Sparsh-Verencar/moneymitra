@@ -347,7 +347,7 @@ const HomePage = () => {
             {/* Tax Planner card (dynamic route) */}
             <article
               onClick={() => {
-                const userId = user?.uid || user?.id || 'demo-user';
+                const userId = user?.uid || 'demo-user';
                 router.push(`/tax-planner/${userId}`);
               }}
               className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6">

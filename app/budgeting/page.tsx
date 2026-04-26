@@ -190,6 +190,7 @@ export default function BudgetingPage() {
 
   const startBudgeting = async () => {
     if (!backendPayload) return;
+  
     setStarting(true);
     try {
       const res = await fetch('http://localhost:8000/start-session', {
