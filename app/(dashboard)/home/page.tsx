@@ -121,12 +121,6 @@ const HomePage = () => {
           </button>
 
           <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center md:gap-4">
-            <div className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/3 px-4 py-3 md:w-[320px]">
-              <Search size={14} className="shrink-0 text-[#9a9184]" />
-              <span className="truncate text-sm text-[#b7b1a6]">
-                Search topics, subtopics, concepts
-              </span>
-            </div>
 
             <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/3 px-3 py-2 md:justify-start">
               <div className="text-right leading-tight">
@@ -246,21 +240,6 @@ const HomePage = () => {
               </article>
             ))}
           </div>
-        </section>
-
-        <section className="mt-10 grid gap-4 md:grid-cols-3">
-          {[
-            'Plain-language explanations for beginners',
-            'India-specific rules and instruments',
-            'A learning flow that can later extend into concept details and AI help',
-          ].map((text) => (
-            <div
-              key={text}
-              className="rounded-2xl border border-white/8 bg-white/3 p-5 text-sm leading-7 text-[#b7b1a6]"
-            >
-              {text}
-            </div>
-          ))}
         </section>
 
           <section className="mt-12">
