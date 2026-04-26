@@ -25,15 +25,23 @@ const getIcon = (id: string | number) => {
   const iconId = String(id).toLowerCase();
   switch (iconId) {
     case 'investing':
-      return <TrendingUp className="text-amber-400" size={22} strokeWidth={1.75} />;
+      return (
+        <TrendingUp className="text-amber-400" size={22} strokeWidth={1.75} />
+      );
     case 'budgeting':
       return <Wallet className="text-amber-400" size={22} strokeWidth={1.75} />;
     case 'insurance':
-      return <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />;
+      return (
+        <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />
+      );
     case 'taxes':
-      return <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />;
+      return (
+        <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />
+      );
     default:
-      return <LayoutGrid className="text-amber-400" size={22} strokeWidth={1.75} />;
+      return (
+        <LayoutGrid className="text-amber-400" size={22} strokeWidth={1.75} />
+      );
   }
 };
 
@@ -121,13 +129,6 @@ const HomePage = () => {
           </button>
 
           <div className="flex w-full flex-col gap-3 md:w-auto md:flex-row md:items-center md:gap-4">
-            <div className="flex items-center gap-3 rounded-2xl border border-white/8 bg-white/3 px-4 py-3 md:w-[320px]">
-              <Search size={14} className="shrink-0 text-[#9a9184]" />
-              <span className="truncate text-sm text-[#b7b1a6]">
-                Search topics, subtopics, concepts
-              </span>
-            </div>
-
             <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/8 bg-white/3 px-3 py-2 md:justify-start">
               <div className="text-right leading-tight">
                 <div className="text-[9px] uppercase tracking-[0.2em] text-amber-300 sm:text-[10px] sm:tracking-[0.25em]">
@@ -159,8 +160,9 @@ const HomePage = () => {
                 Build financial confidence step by step.
               </h1>
               <p className="mt-5 max-w-2xl text-sm leading-7 text-[#b7b1a6] sm:text-base sm:leading-8 md:text-lg">
-                Start with a topic, open its subtopics, and move through concepts in a guided
-                learning flow. The language stays simple. The content stays India-specific.
+                Start with a topic, open its subtopics, and move through
+                concepts in a guided learning flow. The language stays simple.
+                The content stays India-specific.
               </p>
             </div>
 
@@ -248,22 +250,7 @@ const HomePage = () => {
           </div>
         </section>
 
-        <section className="mt-10 grid gap-4 md:grid-cols-3">
-          {[
-            'Plain-language explanations for beginners',
-            'India-specific rules and instruments',
-            'A learning flow that can later extend into concept details and AI help',
-          ].map((text) => (
-            <div
-              key={text}
-              className="rounded-2xl border border-white/8 bg-white/3 p-5 text-sm leading-7 text-[#b7b1a6]"
-            >
-              {text}
-            </div>
-          ))}
-        </section>
-
-          <section className="mt-12">
+        <section className="mt-12">
           <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <div className="text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-300 sm:text-xs sm:tracking-[0.3em]">
@@ -273,8 +260,8 @@ const HomePage = () => {
                 Personalized support tools
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-7 text-[#a8a091] sm:text-base">
-                Use AI-guided tools to understand your money better and take action with more
-                confidence.
+                Use AI-guided tools to understand your money better and take
+                action with more confidence.
               </p>
             </div>
           </div>
@@ -287,7 +274,11 @@ const HomePage = () => {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
-                  <Bot className="text-amber-400" size={22} strokeWidth={1.75} />
+                  <Bot
+                    className="text-amber-400"
+                    size={22}
+                    strokeWidth={1.75}
+                  />
                 </div>
 
                 <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
@@ -300,8 +291,8 @@ const HomePage = () => {
               </h3>
 
               <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
-                Share your income, expenses, savings, and goals to get a guided budgeting flow with
-                one question at a time.
+                Share your income, expenses, savings, and goals to get a guided
+                budgeting flow with one question at a time.
               </p>
 
               <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
@@ -319,7 +310,11 @@ const HomePage = () => {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
-                  <Receipt className="text-amber-400" size={22} strokeWidth={1.75} />
+                  <Receipt
+                    className="text-amber-400"
+                    size={22}
+                    strokeWidth={1.75}
+                  />
                 </div>
 
                 <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
@@ -332,8 +327,8 @@ const HomePage = () => {
               </h3>
 
               <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
-                Browse key Indian tax sections like 80C, 80D, 24(b), and HRA with simple
-                explanations and examples.
+                Browse key Indian tax sections like 80C, 80D, 24(b), and HRA
+                with simple explanations and examples.
               </p>
 
               <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
@@ -350,10 +345,15 @@ const HomePage = () => {
                 const userId = user?.uid || 'demo-user';
                 router.push(`/tax-planner/${userId}`);
               }}
-              className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6">
+              className="group cursor-pointer rounded-[1.5rem] border border-amber-300/50 bg-[#111111] p-5 ring-1 ring-amber-300/25 shadow-[0_0_0_1px_rgba(251,191,36,0.22),0_0_24px_rgba(251,191,36,0.18),0_0_60px_rgba(245,158,11,0.12)] transition duration-300 hover:-translate-y-1 hover:border-amber-200 hover:ring-1 hover:ring-amber-200/60 hover:shadow-[0_0_0_1px_rgba(251,191,36,0.38),0_0_36px_rgba(251,191,36,0.24),0_0_80px_rgba(245,158,11,0.16)] md:p-6"
+            >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-black/25">
-                  <ShieldCheck className="text-amber-400" size={22} strokeWidth={1.75} />
+                  <ShieldCheck
+                    className="text-amber-400"
+                    size={22}
+                    strokeWidth={1.75}
+                  />
                 </div>
 
                 <div className="rounded-full border border-white/8 px-3 py-1 text-[9px] uppercase tracking-[0.22em] text-[#8f877a] sm:text-[10px] sm:tracking-[0.25em]">
@@ -366,8 +366,8 @@ const HomePage = () => {
               </h3>
 
               <p className="mt-3 text-sm leading-7 text-[#a8a091] sm:text-base">
-                Use your profile to run old vs new regime checks and estimate how different tax
-                moves could change your payable tax.
+                Use your profile to run old vs new regime checks and estimate
+                how different tax moves could change your payable tax.
               </p>
 
               <div className="mt-6 flex items-center justify-between border-t border-white/8 pt-5 text-[#8f877a] transition group-hover:text-amber-300">
@@ -379,7 +379,6 @@ const HomePage = () => {
             </article>
           </div>
         </section>
-
       </main>
 
       <footer className="border-t border-white/8 px-4 py-8 sm:px-6">
